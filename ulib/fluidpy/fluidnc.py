@@ -2,8 +2,26 @@ import board
 import busio
 import re
 from udecimal import DecimalNumber as Decimal
+from abc import ABC, abstractmethod
 
 VALID_STATES = ('Idle', 'Run', 'Hold', 'Jog', 'Alarm', 'Door', 'Check', 'Home', 'Sleep')
+
+class BufferInterface(ABC):
+
+    @abstractmethod
+    def read(self, n: int) -> bytes:
+        raise NotImplementedError
+
+    @abstractmethod
+    def write(self, buffer: bytes) -> int:
+        raise NotImplementedError
+
+    @abstractmethod
+    def readline(self) -> bytes:
+        raise NotImplementedError
+
+
+
 
 class Position:
 
@@ -101,14 +119,14 @@ class FluidNC:
     # eg. [GC:G0 G55 G17 G21 G90 G94 M5 M9 T0 F0 S0]
     mode_re = re.compile(r"\[GC:(.+?)\]")
 
-    def __init__(self, rx_pin=board.D6, tx_pin=board.D7, baudrate: int=115200) -> None:
-        self.uart = busio.UART(rx_pin, tx_pin, baudrate=baudrate)
+    def __init__(self, io: BufferInterface) -> None:
+        self.io = io
 
     def send_message(self, message: str) -> None:
-        self.uart.write(message.encode())
+        self.io.write(message.encode())
 
     def read_message(self) -> str | None:
-        msg = self.uart.readline()
+        msg = self.io.readline()
         if msg:
             return msg.decode().strip()
         return None

@@ -2,7 +2,7 @@ import board
 import busio
 import digitalio
 
-from fluidnc import FluidNC, BufferInterface
+from fluidpy.fluidnc import FluidNC, BufferInterface
 
 
 class UARTInterface(BufferInterface):

@@ -1,0 +1,36 @@
+/*
+ https://coolors.co/e6c229-f17105-d11149-6610f2-1a8fe3
+*/
+
+.md-header {
+  background: #d11149;
+}
+
+nav.md-tabs {
+  display: none;
+}
+
+
+h2.doc-heading-parameter {
+  font-size: 16px;
+}
+
+.doc-md-description {
+  font-size: 16px;
+  display: block;
+}
+
+.md-nav__item--section>.md-nav__link[for],
+.md-nav--lifted>.md-nav__list>.md-nav__item>[for],
+.md-nav__title {
+  font-size: 14px;
+  color: #3778AE !important;
+}
+
+.md-nav__link--active {
+  color: #6497B1 !important;
+}
+
+.admonition {
+  font-size: 16px !important;
+}

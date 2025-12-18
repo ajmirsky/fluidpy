@@ -1,0 +1,167 @@
+# MKDocs configuration file for generating RTD (readthedocs) documentation
+
+site_name: "FluidPy"
+site_description: "Library to interact with FluidNC's channel protocol."
+site_url: https://github.com/ajmirsky/fluidpy
+repo_url: https://github.com/ajmirsky/fluidpy
+repo_name: ajmirsky/fluidpy
+site_dir: "dist/rtd"
+watch:
+  - mkdocs.rtd.yml
+  - README.md
+  - ulib
+  - usrc
+  - samples
+copyright: 'ajmirsky © 2025'
+edit_uri: edit/main/docs/
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+
+nav:
+  - Home:
+      - Overview: index.md
+      - Reference: api.md
+      - License: license.md
+
+theme:
+  name: material
+  logo: imgs/fluidpy.svg
+  features:
+    - toc.integrate
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips
+    - navigation.footer
+    - navigation.instant.preview
+    - navigation.path
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - toc.follow
+    - version
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+extra_css:
+  - assets/extra.css
+
+#extra_javascript:
+#- assets/extra.js
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - callouts:
+      strip_period: false
+  - footnotes
+  - pymdownx.details
+  - pymdownx.highlight:
+      pygments_lang_class: true
+  - pymdownx.magiclink
+  - pymdownx.snippets:
+      base_path: !relative $config_dir
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - toc:
+      permalink: "¤"
+      toc_depth: 3
+
+plugins:
+  - search
+  - autorefs
+  - open-in-new-tab
+  - markdown-exec
+  - section-index
+  - coverage
+  - mkdocs-typer2:
+  - mkdocstrings:
+      custom_templates: 'docs/templates'
+      handlers:
+        python:
+          paths: [amqtt]
+          options:
+#            extra:
+#              template_log_display: true
+            docstring_options:
+              ignore_init_summary: true
+            docstring_section_style: list
+            filters: ["!^_"]
+            heading_level: 2
+            inherited_members: true
+            merge_init_into_class: true
+            parameter_headings: true
+            separate_signature: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_signature_annotations: true
+            show_source: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            signature_crossrefs: true
+            summary: true
+            extensions:
+              - docs/scripts/exts.py:DataclassDefaultFactoryExtension:
+                paths: [mypkg.mymod.myobj]
+  - git-revision-date-localized:
+      enabled: !ENV [DEPLOY, false]
+      enable_creation_date: true
+      type: timeago
+
+  #- redirects:
+  #    redirect_maps:
+  #      original_file.md: new/file_location.md
+
+  - minify:
+      minify_html: !ENV [DEPLOY, false]
+  - group:
+      enabled: !ENV [MATERIAL_INSIDERS, false]
+      plugins:
+        - typeset
+
+extra:
+  version:
+    provider: readthedocs
+    default: v0.11.0
+    warning: true
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/pawamoy
+    - icon: fontawesome/brands/mastodon
+      link: https://fosstodon.org/@pawamoy
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/pawamoy
+    - icon: fontawesome/brands/gitter
+      link: https://gitter.im/mkdocstrings/community
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/mkdocstrings/

@@ -8,7 +8,7 @@ try:
 except ImportError:
     import adafruit_logging as logging
 
-from fluidpy.fluidnc import FluidNC, BufferInterface
+from fluidpy import FluidNC, BufferInterface
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-<img src="https://github.com/ajmirsky/fluidpy/master/docs/imgs/flyidpy.svg" width="600" />
+<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/fluidpy.svg" width="600" />
 
 ## Introduction
 
@@ -27,11 +27,11 @@ which  enables interfacing with the FluidNC controller on multiple platforms inc
 
 CircuitPython can be run on a [wide range of microcontrollers](https://circuitpython.org/downloads).
 
-<img src="https://github.com/ajmirsky/fluidpy/master/docs/imgs/board_example_1.png" width="600" />
+<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/board_example_1.png" width="600" />
 
 *PiBot v4 board with a Seeeduino Xaio RP2040 microcontroller.*
 
-<img src="https://github.com/ajmirsky/fluidpy/master/docs/imgs/board_example_2.png" width="600" />
+<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/board_example_2.png" width="600" />
 
 *Corgi board with a Raspberry Pi Pico microcontroller.*
 
@@ -44,11 +44,11 @@ CircuitPython can be run on a [wide range of microcontrollers](https://circuitpy
 
 ### single board and desktop computers
 
-<img src="https://github.com/ajmirsky/fluidpy/master/docs/imgs/board_example_3.png" width="600" />
+<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/board_example_3.png" width="600" />
 
 * Raspberry Pi connections *
 
-<img src="https://github.com/ajmirsky/fluidpy/master/docs/imgs/board_example_4.png" width="600" />
+<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/board_example_4.png" width="600" />
 
 * Adafruit's [USB to Serial converter](https://www.adafruit.com/product/5335) *
 

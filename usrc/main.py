@@ -2,7 +2,14 @@ import board
 import busio
 import digitalio
 
-from fluidpy.fluidnc import FluidNC, BufferInterface
+try:
+    import logging
+except ImportError:
+    import adafruit_logging as logging
+
+from fluidpy.fluidnc import FluidNC, BufferInterface, FluidParseError
+
+logger = logging.getLogger(__name__)
 
 
 class UARTInterface(BufferInterface):
@@ -39,4 +46,6 @@ if __name__ == "__main__":
     my_expander = MyFluidExpander(uart_io)
 
     # start a loop to listen for incoming messages
+
     my_expander.listen()
+

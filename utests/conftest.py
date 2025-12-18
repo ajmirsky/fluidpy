@@ -17,15 +17,19 @@ class TestFluidExpander(FluidNC):
             if method.startswith("handle_") and callable(getattr(self, method))
         ]
 
-        # ... and replace them with mocks
+        # ... and replace them with a Mock
+        self.mocks = dict()
         for handler in handlers:
-            setattr(self, handler, MagicMock())
+            self.mocks[handler] = MagicMock()
+            setattr(self, handler, self.mocks[handler])
 
 
 @pytest.fixture
 def fnc() -> FluidNC:
     class TestInterface(BufferInterface):
-        pass
+        def write(self, buffer: bytes) -> int:
+            return len(buffer)
+
 
     fluidnc = TestFluidExpander(TestInterface())
 

@@ -8,7 +8,6 @@ except ImportError:
 from fluidpy.udecimal import DecimalNumber as Decimal
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 VALID_STATES = ('Idle', 'Run', 'Hold', 'Jog', 'Alarm', 'Door', 'Check', 'Home', 'Sleep')
 
@@ -204,41 +203,41 @@ class FluidNC:
         self.send_bytes(bytes([0xB2,]))  # default response is ACK
 
     def handle_machine_state(self, state: str):
-        logger.info(f"machine state >> {state}")
+        logger.debug(f"machine state >> {state}")
 
     def handle_position(self, kind: str, position: Position):
-        logger.info(f"{kind} >> {position}")
+        logger.debug(f"{kind} >> {position}")
 
     def handle_mode(self, mode: Mode):
-        logger.info(f"mode >> {mode}")
+        logger.debug(f"mode >> {mode}")
 
     def handle_mode_command(self, mode_cmd: str, status: str = "None"):
-        logger.info(f"mode command >> {mode_cmd} : {status}")
+        logger.debug(f"mode command >> {mode_cmd} : {status}")
 
     def handle_log(self, level: str, message: str):
         level_str = level.replace(":", "").lower() if level else ""
-        logger.info(f"log ({(level or "").lower()}) >> {message}")
+        logger.debug(f"log ({level_str}) >> {message}")
 
     def handle_version(self, version: str):
-        logger.info(f"version >> {version}")
+        logger.debug(f"version >> {version}")
 
     def handle_feed(self, feed_rate: Decimal):
-        logger.info(f"feed >> {feed_rate}")
+        logger.debug(f"feed >> {feed_rate}")
 
     def handle_spindle(self, spindle_speed: Decimal):
-        logger.info(f"spindle >> {spindle_speed}")
+        logger.debug(f"spindle >> {spindle_speed}")
 
     def handle_variable(self, variable: str, value: str):
-        logger.info(f"variable >> {variable} = {value}")
+        logger.debug(f"variable >> {variable} = {value}")
 
     def handle_help(self, message: str):
-        logger.info(f"help >> {message}")
+        logger.debug(f"help >> {message}")
 
     def handle_tlo(self, message: str):
-        logger.info(f"tool length offset >> {message}")
+        logger.debug(f"tool length offset >> {message}")
 
     def handle_prb(self, message: str):
-        logger.info(f"probe >> {message}")
+        logger.debug(f"probe >> {message}")
 
     # def handle_ini(self, ini: dict):
     #     pass
@@ -249,35 +248,35 @@ class FluidNC:
         # `P` > the probe pin.
         # `T` > the tool setter pin
         # `D H R S` > the door, hold, soft-reset, and cycle-start pins, respectively
-        logger.info(f"Trigger: {triggers}")
+        logger.debug(f"Trigger: {triggers}")
 
     def handle_overrides(self, feed: Decimal, rapid: Decimal, spindle: Decimal):
-        logger.info(f"Overrides >> feed: {feed}, rapid: {rapid}, spindle: {spindle}")
+        logger.debug(f"Overrides >> feed: {feed}, rapid: {rapid}, spindle: {spindle}")
 
     def handle_line_number(self, line_number: int):
-        logger.info(f"Line number >> {line_number}")
+        logger.debug(f"Line number >> {line_number}")
 
     def handle_error(self, error: str):
-        logger.info(f"Error >> {error}")
+        logger.debug(f"Error >> {error}")
 
     def handle_ok(self, ok: str):
-        logger.info(f"Ok >> {ok}")
+        logger.debug(f"Ok >> {ok}")
 
     def handle_buffer_size(self, size: int):
-        logger.info(f"Buffer size >> {size}")
+        logger.debug(f"Buffer size >> {size}")
 
     def handle_accessory_state(self, state: str):
-        logger.info(f"Accessory state >> {state}")
+        logger.debug(f"Accessory state >> {state}")
 
     def handle_alarm(self, alarm: str):
-        logger.info(f"Alarm >> {alarm}")
+        logger.debug(f"Alarm >> {alarm}")
 
     def handle_echo(self, message: str):
-        logger.info(f"Echo >> {message}")
+        logger.debug(f"Echo >> {message}")
 
     # ------------------------------------------
 
-    def listen(self, catch_exceptions: bool = True):
+    def listen(self, catch_exc: bool = True):
         print("Listening...")
 
         while True:
@@ -285,27 +284,37 @@ class FluidNC:
             try:
                 data = self.read_message()
             except UnicodeError as e:
-                logger.error(f"Unicode error: {e}")
-                if not catch_exceptions:
-                    raise e
+                logger.warning(f"Unicode error: {e}")
             if not data:
                 continue
             try:
                 self.process_message(data)
             except FluidParseError as e:
-                logger.error(f"Fluid parse error: {e}")
-                if not catch_exceptions:
+                if not catch_exc:
+                    logger.error(f"Fluid parse error: {e}")
                     raise e
+                logger.warning(f"Fluid parse error: {e}")
 
-    async def alisten(self):
+    async def alisten(self, catch_exc: bool = True):
         print("Listening...")
         while True:
+            data = None
             # TODO : create an async read message
-            data = self.read_message()
+            try:
+                data = self.read_message()
+            except UnicodeError as e:
+                logger.warning(f"Unicode error: {e}")
+
             if not data:
                 await asyncio.sleep(0)
                 continue
-            self.process_message(data)
+            try:
+                self.process_message(data)
+            except FluidParseError as e:
+                if not catch_exc:
+                    logger.error(f"Fluid parse error: {e}")
+                    raise e
+                logger.warning(f"Fluid parse error: {e}")
 
     def process_message(self, message: str) -> None:
 

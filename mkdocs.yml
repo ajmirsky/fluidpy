@@ -7,11 +7,10 @@ repo_url: https://github.com/ajmirsky/fluidpy
 repo_name: ajmirsky/fluidpy
 site_dir: "dist/rtd"
 watch:
-  - mkdocs.rtd.yml
+  - mkdocs.yml
   - README.md
-  - ulib
-  - usrc
-  - samples
+  - src
+  - examples
 copyright: 'ajmirsky © 2025'
 edit_uri: edit/main/docs/
 
@@ -28,7 +27,7 @@ nav:
 
 theme:
   name: material
-  logo: imgs/fluidpy.svg
+  logo: imgs/fluidpy_banner.svg
   features:
     - toc.integrate
     - announce.dismiss
@@ -130,9 +129,9 @@ plugins:
             show_symbol_type_toc: true
             signature_crossrefs: true
             summary: true
-            extensions:
-              - docs/scripts/exts.py:DataclassDefaultFactoryExtension:
-                paths: [mypkg.mymod.myobj]
+#            extensions:
+#              - docs/scripts/exts.py:DataclassDefaultFactoryExtension:
+#                paths: [mypkg.mymod.myobj]
   - git-revision-date-localized:
       enabled: !ENV [DEPLOY, false]
       enable_creation_date: true

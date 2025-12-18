@@ -1,4 +1,4 @@
-<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/fluidpy.svg" width="600" />
+<img src="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/fluidpy.svg" width="450" />
 
 ## Introduction
 
@@ -18,22 +18,28 @@ FluidPy is currently supported on Python 3.7+, [MicroPython](https://micropython
 which  enables interfacing with the FluidNC controller on multiple platforms including microcontrollers, single board computers 
 (with a [GPIO header such as a RaspberryPi](https://pinout.xyz/)) or even full desktop computers (with a [serial to USB adapter](https://www.google.com/search?q=usb+to+serial+adapter&oq=usb+to+serial)).
 
-## Getting Started
-
 > Wiring diagrams are below for a few example platforms. When defining the uart section in your FluidNC config,
 > note the Tx pin of the controller connects to the Rx pin of the expander; controller's Rx pin to the expander's Tx pin.
 
-### microcontrollers
+## Getting Started with Microcontrollers
 
 CircuitPython can be run on a [wide range of microcontrollers](https://circuitpython.org/downloads).
 
-<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/board_example_1.png" width="600" />
+<figure>
+    <img src="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_1.png" width="600" />
+    <figcaption>PiBot v4 board with a Seeeduino Xaio RP2040 microcontroller.</figcaption>
+</figure>
 
-*PiBot v4 board with a Seeeduino Xaio RP2040 microcontroller.*
 
-<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/board_example_2.png" width="600" />
 
-*Corgi board with a Raspberry Pi Pico microcontroller.*
+<figure>
+    <img src="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_2.png" width="600" />
+    <figcaption>Corgi board with a Raspberry Pi Pico microcontroller.</figcaption>
+</figure>
+
+
+
+
 
 > Note: The microcontroller can be powered by the 5V rail of the board but not at the same time as being
 > powered by the USB port.
@@ -42,20 +48,23 @@ CircuitPython can be run on a [wide range of microcontrollers](https://circuitpy
 2. Clone this repository and copy `ulib/fluidpy` to the `lib` directory of your CircuitPython device.
 3. Copy `examples/cpy_example.py` to `main.py` on your device (delete `code.py` if it exists).
 
-### single board and desktop computers
-
-<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/board_example_3.png" width="600" />
-
-* Raspberry Pi connections *
-
-<img src="https://github.com/ajmirsky/fluidpy/blob/main/docs/imgs/board_example_4.png" width="600" />
-
-* Adafruit's [USB to Serial converter](https://www.adafruit.com/product/5335) *
+## Single board and desktop computers
 
 1. Create a new python virtual environment: `python -m venv .venv; source .venv/bin/activate`
 2. Install the fluidpy library: `pip install fluidpy`
 3. Copy `examples/py_example.py` to your project directory as `main.py`.
 
-## Interface
+
+<figure>
+    <img src="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_3.png" width="600" />
+    <figcaption>Raspberry Pi connections.</figcaption>
+</figure>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_4.png" width="600" />
+    <figcaption>Adafruit's <a href="https://www.adafruit.com/product/5335)>USB-to-Serial Adapter</a>.</figcaption>
+</figure>
+
+
 
 

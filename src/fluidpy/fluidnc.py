@@ -40,11 +40,17 @@ class Position:
                  c: Decimal | str = Decimal(0)):
 
         self.x: Decimal = x if isinstance(x, Decimal) else Decimal(str(x))
+        """x value of the position"""
         self.y: Decimal = y if isinstance(y, Decimal) else Decimal(str(y))
+        """y value of the position"""
         self.z: Decimal = z if isinstance(z, Decimal) else Decimal(str(z))
+        """z value of the position"""
         self.a: Decimal = a if isinstance(a, Decimal) else Decimal(str(a))
+        """a value of the position"""
         self.b: Decimal = b if isinstance(b, Decimal) else Decimal(str(b))
+        """b value of the position"""
         self.c: Decimal = c if isinstance(c, Decimal) else Decimal(str(c))
+        """c value of the position"""
 
     def __repr__(self) -> str:
         return f"Position(x={self.x}, y={self.y}, z={self.z}, a={self.a}, b={self.b}, c={self.c})"
@@ -57,28 +63,40 @@ class Mode:
 
 
     def __init__(self,
-                 is_rapid: bool = False, # rapid mode (G0), feed rate mode (G1),
-                 wco_index: int = 0, # G54, G55, etc
-                 plane: str = 'XY', # XY (G17), XZ (G18), YZ (G19),
-                 is_inches: bool = False, # inches (G20), mm (G21),
-                 is_absolute: bool = False, # absolute (G90), relative (G91),
-                 spindle_state: str = 'OFF',  # CW (M3), CCW (M4), STOP (M5)
+                 is_rapid: bool = False,
+                 wco_index: int = 0,
+                 plane: str = 'XY',
+                 is_inches: bool = False,
+                 is_absolute: bool = False,
+                 spindle_state: str = 'OFF',
                  feed_rate_mode: str = 'UNITS/MIN', # INVERSE (G93), UNITS/MIN (G94), UNITS/REV (G95)
-                 coolant: str = 'FLOOD', # MIST (M7), FLOOD (M8), OFF (M9)
+                 coolant: str = 'FLOOD',
                  tool_number: int = 0,
                  feed_rate: Decimal = Decimal(0),
                  spindle_speed: Decimal = Decimal(0),
                  ):
         self.is_rapid = is_rapid
+        """rapid mode (G0), feed rate mode (G1)"""
         self.wco_index = wco_index
+        """work coordinate offset of `0` (G53), `1` (G54), `2` (G55), etc"""
         self.plane = plane
+        """`'XY'` (G17), `'XZ'` (G18), `'YZ'` (G19)"""
         self.is_inches = is_inches
+        """inches (G20), mm (G21)"""
         self.is_absolute = is_absolute
+        """absolute (G90), relative (G91)"""
         self.feed_rate_mode = feed_rate_mode
+        """`'INVERSE'` (G93), `'UNITS/MIN'` (G94), `'UNITS/REV'` (G95)"""
         self.coolant = coolant
+        """`'MIST'` (M7), `'FLOOD'` (M8), `'OFF'` (M9)"""
         self.tool_number = tool_number
+        """tool number 0-9"""
         self.feed_rate = feed_rate
+        """feed rate"""
         self.spindle_speed = spindle_speed
+        """spindle speed"""
+        self.spindle_state = spindle_state
+        """`'CW'` (M3), `'CCW'` (M4), `'STOP'` (M5)"""
 
     def __repr__(self) -> str:
         return f"Mode(is_rapid={self.is_rapid}, wco_index={self.wco_index}, plane={self.plane}, is_inches={self.is_inches}, is_absolute={self.is_absolute}, feed_rate_mode={self.feed_rate_mode}, coolant={self.coolant}, tool_number={self.tool_number}, feed_rate={self.feed_rate}, spindle_speed={self.spindle_speed})"
@@ -157,9 +175,15 @@ class FluidNC:
         self.io = io
 
     def send_message(self, message: str) -> None:
+        """
+        Send a string message to the controller.
+        """
         self.io.write(message.encode())
 
     def send_bytes(self, command: bytes) -> None:
+        """
+        Send a bytes message to the controller.
+        """
         self.io.write(command)
 
     def read_message(self) -> str | None:
@@ -196,82 +220,185 @@ class FluidNC:
 
     # ------------------------------------------
 
-    def handle_exp_id(self):
+    def handle_exp_id(self) -> None:
+        """
+        Sends the expander id of 'fluidpy' to the controller.
+        """.format(VALID_STATES)
         self.send_message("(EXP,fluidpy)")
 
-    def handle_exp_io(self, io_name: str, io_mode: str):
+    def handle_exp_io(self, io_name: str, io_mode: str) -> None:
+        """
+        Handle the initialization of an expander pin.
+        Needs to acknowledge the pin initialization (0xB2) or failure (0xB3).
+
+        Parameters:
+            io_name: `io.1`, `io.2`, etc
+            io_mode: comma seperated list of `[in|out|low|high|pu|pd]`
+
+        Returns:
+            None
+        """
         self.send_bytes(bytes([0xB2,]))  # default response is ACK
 
-    def handle_machine_state(self, state: str):
+    def handle_machine_state(self, state: str) -> None:
+        """
+        Parameters:
+            state: one of one of `['Idle', 'Run', 'Hold', 'Jog', 'Alarm', 'Door', 'Check', 'Home', 'Sleep']`
+        """
         logger.debug(f"machine state >> {state}")
 
-    def handle_position(self, kind: str, position: Position):
+    def handle_position(self, kind: str, position: Position) -> None:
+        """
+        Parameters:
+            kind: `MPos` (machine position) or `WCO` (work coordinate offset)
+            position: `Position` object with `x`, `y`, `z`, `a`, `b`, `c` attributes
+        """
         logger.debug(f"{kind} >> {position}")
 
-    def handle_mode(self, mode: Mode):
+    def handle_mode(self, mode: Mode) -> None:
+        """
+        Parameters:
+            mode: `Mode` object with attributes for `rapid`, `wco_index`, `plane`, `is_inches`, `is_absolute`, `feed_rate_mode`, `coolant`, `tool_number`, `feed_rate`, `spindle_speed`
+        """
         logger.debug(f"mode >> {mode}")
 
-    def handle_mode_command(self, mode_cmd: str, status: str = "None"):
+    def handle_mode_command(self, mode_cmd: str, status: str = "None") -> None:
+        """
+        Parameters:
+            mode_cmd: one of `G54`, `G55`, `G56`, `G57`, `G58`, `G59`, `G28`, `G30`, `G92`
+        """
         logger.debug(f"mode command >> {mode_cmd} : {status}")
 
-    def handle_log(self, level: str, message: str):
+    def handle_log(self, level: str, message: str) -> None:
+        """
+        Parameters
+            level: one of `DBG`, `INFO`, `WARN`, `ERROR`
+            message: log message
+        """
         level_str = level.replace(":", "").lower() if level else ""
         logger.debug(f"log ({level_str}) >> {message}")
 
-    def handle_version(self, version: str):
+    def handle_version(self, version: str) -> None:
+        """
+        Parameters
+            version: X.Y.Z or X.Y.Z-abc
+        """
         logger.debug(f"version >> {version}")
 
-    def handle_feed(self, feed_rate: Decimal):
+    def handle_feed(self, feed_rate: Decimal) -> None:
+        """
+        Parameters:
+            feed_rate: in mm/min or inches/min
+        """
         logger.debug(f"feed >> {feed_rate}")
 
-    def handle_spindle(self, spindle_speed: Decimal):
+    def handle_spindle(self, spindle_speed: Decimal) -> None:
+        """
+        Parameters:
+            spindle_speed: in RPM
+        """
         logger.debug(f"spindle >> {spindle_speed}")
 
-    def handle_variable(self, variable: str, value: str):
+    def handle_variable(self, variable: str, value: str) -> None:
+        """
+        Parameters:
+            variable: name of the variable
+            value: value of the variable
+        """
         logger.debug(f"variable >> {variable} = {value}")
 
-    def handle_help(self, message: str):
+    def handle_help(self, message: str) -> None:
+        """
+        Parameters:
+            message: help message
+        """
         logger.debug(f"help >> {message}")
 
-    def handle_tlo(self, message: str):
+    def handle_tlo(self, message: str) -> None:
+        """
+        Parameters:
+            message: tool length offset message
+        """
         logger.debug(f"tool length offset >> {message}")
 
-    def handle_prb(self, message: str):
+    def handle_prb(self, message: str) -> None:
+        """
+        Parameters:
+            message: probe message
+        """
         logger.debug(f"probe >> {message}")
 
     # def handle_ini(self, ini: dict):
     #     pass
 
     # TODO : handle_x, handle_y, handle_z, handle_a, handle_b, handle_c etc (maybe?)
-    def handle_triggers(self, triggers: str):
-        # `X Y Z A B C` XYZABC limit pins, respectively
-        # `P` > the probe pin.
-        # `T` > the tool setter pin
-        # `D H R S` > the door, hold, soft-reset, and cycle-start pins, respectively
+    def handle_triggers(self, triggers: str) -> None:
+        """
+        Parameters:
+            triggers:
+                - `X Y Z A B C` XYZABC limit pins, respectively
+                - `P` > the probe pin.
+                -`T` > the tool setter pin
+                - `D H R S` > the door, hold, soft-reset, and cycle-start pins, respectively
+        """
         logger.debug(f"Trigger: {triggers}")
 
-    def handle_overrides(self, feed: Decimal, rapid: Decimal, spindle: Decimal):
+    def handle_overrides(self, feed: Decimal, rapid: Decimal, spindle: Decimal) -> None:
+        """
+        Parameters:
+            feed: override percentage
+            rapid: override percentage
+            spindle: override percentage
+        """
         logger.debug(f"Overrides >> feed: {feed}, rapid: {rapid}, spindle: {spindle}")
 
-    def handle_line_number(self, line_number: int):
+    def handle_line_number(self, line_number: int) -> None:
+        """
+        Parameters:
+            line_number: current line number
+        """
         logger.debug(f"Line number >> {line_number}")
 
-    def handle_error(self, error: str):
+    def handle_error(self, error: str) -> None:
+        """
+        Parameters:
+            error: error message or code
+        """
         logger.debug(f"Error >> {error}")
 
     def handle_ok(self, ok: str):
+        """
+        Parameters:
+            ok: `'ok'`
+        """
         logger.debug(f"Ok >> {ok}")
 
     def handle_buffer_size(self, size: int):
+        """
+        Parameters:
+            size: current buffer size
+        """
         logger.debug(f"Buffer size >> {size}")
 
     def handle_accessory_state(self, state: str):
+        """
+        Parameters:
+            state: accessor state information
+        """
         logger.debug(f"Accessory state >> {state}")
 
     def handle_alarm(self, alarm: str):
+        """
+        Parameters:
+            alarm: alarm message or code
+        """
         logger.debug(f"Alarm >> {alarm}")
 
     def handle_echo(self, message: str):
+        """
+        Parameters:
+            message: echo'ed message
+        """
         logger.debug(f"Echo >> {message}")
 
     # ------------------------------------------

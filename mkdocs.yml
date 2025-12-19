@@ -102,7 +102,6 @@ plugins:
   - open-in-new-tab
   - markdown-exec
   - section-index
-  - coverage
   - mkdocs-typer2:
   - mkdocstrings:
       custom_templates: 'docs/templates'
@@ -151,16 +150,10 @@ plugins:
 extra:
   version:
     provider: readthedocs
-    default: v0.11.0
+    default: v0.1.0
     warning: true
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/pawamoy
-    - icon: fontawesome/brands/mastodon
-      link: https://fosstodon.org/@pawamoy
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/pawamoy
-    - icon: fontawesome/brands/gitter
-      link: https://gitter.im/mkdocstrings/community
+      link: https://github.com/ajmirsky/fluidpy
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/mkdocstrings/
+      link: https://pypi.org/project/fluidpy

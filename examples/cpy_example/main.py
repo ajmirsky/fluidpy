@@ -76,4 +76,5 @@ async def amain():
     await asyncio.gather(*tasks)
 
 if __name__ == "__main__":
-    asyncio.run(amain())
+    # asyncio.run(amain())
+    main()

@@ -34,3 +34,12 @@ h2.doc-heading-parameter {
 .admonition {
   font-size: 16px !important;
 }
+
+.md-sidebar__scrollwrap {
+    height: 60vh !important;
+}
+
+
+.md-sidebar__inner {
+    height: 60vh;
+}

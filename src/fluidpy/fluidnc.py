@@ -1,9 +1,45 @@
 import asyncio
 import re
 try:
+    # python 3.10+
     import logging
 except ImportError:
-    import adafruit_logging as logging
+    try:
+        # circuitpython's logging
+        import adafruit_logging as logging
+    except ImportError:
+        # no logging module found, use a dummy logger
+        class Logger:
+            def __init__(self, name: str):
+                self.name = name
+                self.level = 30
+            def setLevel(self, level: int):
+                self.level = level
+            def debug(self, msg: str):
+                if self.level <= logging.DEBUG:
+                    print(f"[DEBUG] {self.name} >> {msg}")
+            def info(self, msg: str):
+                if self.level <= logging.INFO:
+                    print(f"[INFO] {self.name} >> {msg}")
+            def warning(self, msg: str):
+                if self.level <= logging.WARNING:
+                    print(f"[WARN] {self.name} >> {msg}")
+            def error(self, msg: str):
+                if self.level <= logging.ERROR:
+                    print(f"[ERROR] {self.name} >> {msg}")
+
+        class Logging:
+
+            CRITICAL = 50
+            ERROR = 40
+            WARNING = 30
+            INFO = 20
+            DEBUG = 10
+
+            @classmethod
+            def getLogger(cls, name: str):  # noqa
+                return Logger(name)
+        logging = Logging()
 
 from fluidpy.udecimal import DecimalNumber as Decimal
 
@@ -14,12 +50,15 @@ VALID_STATES = ('Idle', 'Run', 'Hold', 'Jog', 'Alarm', 'Door', 'Check', 'Home', 
 class BufferInterface:
 
     def read(self, n: int) -> bytes:
+        """Read up to `n` bytes from the buffer."""
         raise NotImplementedError
 
-    def write(self, buffer: bytes) -> int:
+    def write(self, data: bytes) -> int:
+        """Write `data` to the buffer. Return the number of bytes written."""
         raise NotImplementedError
 
     def readline(self) -> bytes:
+        """Read a line from the buffer."""
         raise NotImplementedError
 
 class FluidParseError(Exception):

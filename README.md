@@ -21,11 +21,11 @@ which enables interfacing with the FluidNC controller on multiple platforms incl
 > Wiring diagrams are below for a few example platforms. When defining the uart section in your FluidNC config,
 > note the Tx pin of the controller connects to the Rx pin of the expander microcontroller; and the controller's Rx pin to the expander's Tx pin.
 
-## Getting Started...
+## Getting started...
 
 Additional details can be found in the [API reference](api.md).
 
-### ...with Microcontrollers
+### ...with microcontrollers
 
 CircuitPython can be run on a [wide range of microcontrollers](https://circuitpython.org/downloads).
 
@@ -33,7 +33,7 @@ CircuitPython can be run on a [wide range of microcontrollers](https://circuitpy
 2. Clone this repository and copy the contents of `src/fluidpy` to the `lib/fluidpy` directory of your CircuitPython device.
 3. Copy `examples/cpy_example/main.py` to `main.py` on your device (delete `code.py` if it exists).
 
-### ...with single board and desktop computers
+### ...with computers
 
 1. Create a new python virtual environment: `python -m venv .venv; source .venv/bin/activate`
 2. Install the fluidpy library: `pip install fluidpy`
@@ -44,30 +44,30 @@ CircuitPython can be run on a [wide range of microcontrollers](https://circuitpy
 > Note: Microcontrollers can be powered by the +5V from the UART header or the RJ12 connector, but _should not_ be connected
 > while communicating with the microcontroller via USB.
 
-<figure>
+<div>
     <a href="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_1.png" target="_blank" rel="noopener noreferrer">
         <img src="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_1.png" width="600" />
     </a>
-    <figcaption>PiBot v4 board with a Seeeduino Xaio RP2040 microcontroller.</figcaption>
-</figure>
-
-<figure>
+    <div><em>PiBot v4 board with a Seeeduino Xaio RP2040 microcontroller.</em></div>
+</div>
+<hr/>
+<div>
     <a href="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_2.png" target="_blank" rel="noopener noreferrer">
         <img src="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_2.png" width="600" />
     </a>
-    <figcaption>Corgi board with a Raspberry Pi Pico microcontroller.</figcaption>
-</figure>
-
-<figure>
+    <div><em>Corgi board with a Raspberry Pi Pico microcontroller.</em></div>
+</div>
+<hr/>
+<div>
     <a href="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_3.png" target="_blank" rel="noopener noreferrer">
         <img src="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_3.png" width="600" />
     </a>
-    <figcaption>Raspberry Pi connections.</figcaption>
-</figure>
-
-<figure>
+    <div><em>Raspberry Pi connections.</em></div>
+</div>
+<hr/>
+<div>
     <a href="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_4.png" target="_blank" rel="noopener noreferrer">
         <img src="https://raw.githubusercontent.com/ajmirsky/fluidpy/refs/heads/main/docs/imgs/board_example_4.png" width="600" />
     </a>
-    <figcaption>Adafruit's <a href="https://www.adafruit.com/product/5335)>USB-to-Serial Adapter</a>.</figcaption>
-</figure>
+    <div><em>Adafruit's <a href="https://www.adafruit.com/product/5335" target="_blank" rel="noopener noreferrer">USB-to-Serial Adapter</a>.</em></div>
+</div>

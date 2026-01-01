@@ -23,7 +23,7 @@ which enables interfacing with the FluidNC controller on multiple platforms incl
 
 ## Getting started...
 
-Additional details can be found on the [read the docs](https://readthedocs.org/fluidpy).
+Additional details can be found at [read the docs](https://fluidpy.readthedocs.io/en/latest/).
 
 ### ...with microcontrollers
 
